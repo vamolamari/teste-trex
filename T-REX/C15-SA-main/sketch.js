@@ -29,8 +29,7 @@ function preload(){
   trex_running = loadAnimation("trex1.png","trex3.png","trex4.png");
   trex_collided = loadAnimation("trex_collided.png");
   
-gameOverImg = loadImage ("gameOver.png");
-restartImg = loadImage ("restart.png");
+
 
   groundImage = loadImage("ground2.png");
   
@@ -42,6 +41,9 @@ restartImg = loadImage ("restart.png");
   obstacle4 = loadImage("obstacle4.png");
   obstacle5 = loadImage("obstacle5.png");
   obstacle6 = loadImage("obstacle6.png");
+  
+  gameOverImg = loadImage ("gameOver.png");
+restartImg = loadImage ("restart.png");
   
 }
 
@@ -78,7 +80,7 @@ cloudsGroup = createGroup();
     function draw() {
   background(180);
   text("Pontuação: "+ score, 500,50);
-  score = score + 1;
+  
   
   if(gameState === PLAY){
    
@@ -87,6 +89,8 @@ cloudsGroup = createGroup();
     
     //mover o solo
     ground.velocityX = -4;
+    
+    score = score + 1;
     
     if(keyDown("space")&& trex.y >= 100) {
       trex.velocityY = -9;
@@ -98,7 +102,7 @@ cloudsGroup = createGroup();
       ground.x = ground.width/2;
     }
     
-    trex.collide(invisibleGround);
+    
     
     //gerar as nuvens
     spawnClouds();
@@ -106,7 +110,11 @@ cloudsGroup = createGroup();
     //gerar obstáculos no chão
     spawnObstacles();
     
-    drawSprites();
+    
+    
+    if (obstaclesGroup.isTouching(trex)) {
+      gameState = END;
+    }
   }
 
   else if(gameState === END){
@@ -121,8 +129,8 @@ cloudsGroup = createGroup();
 
     trex.velocityY = 0;
   }
-
-
+trex.collide(invisibleGround);
+drawSprites();
 }
   
  
